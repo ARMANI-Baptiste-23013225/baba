@@ -9,14 +9,15 @@ const Backup = ({ taches, setTasks, categories, setCategories }) => {
         if (confirmReset) {
             setTasks([]);
             setCategories([]);
+            setLoadedData(null);
             localStorage.removeItem('taches');
             localStorage.removeItem('categories');
         }
     };
 
     const handleLoadBackup = () => {
-        setTasks(Datas.taches);
-        setCategories(Datas.categories);
+        setTasks(prevTasks => [...prevTasks, ...Datas.taches]);
+        setCategories(prevCategories => [...prevCategories, ...Datas.categories]);
         setLoadedData(Datas);
     };
 
@@ -28,13 +29,13 @@ const Backup = ({ taches, setTasks, categories, setCategories }) => {
                 <div>
                     <h3>Tâches chargées :</h3>
                     <ul>
-                        {loadedData.taches.map((tache, index) => (
+                        {loadedData.taches?.map((tache, index) => (
                             <li key={index}>{tache.title} - {tache.date_echeance}</li>
                         ))}
                     </ul>
                     <h3>Catégories chargées :</h3>
                     <ul>
-                        {loadedData.categories.map((categorie, index) => (
+                        {loadedData.categories?.map((categorie, index) => (
                             <li key={index}>{categorie.title}</li>
                         ))}
                     </ul>

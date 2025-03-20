@@ -1,13 +1,13 @@
 import React from 'react';
 
-const CalendarView = ({ taches = [] }) => {
+const CalendarView = ({ tasks = [] }) => {
     return (
         <div className="calendar-view">
             <h2>Vue Calendrier</h2>
             <div>
-                {taches?.map((tache, index) => (
+                {tasks.map((task, index) => (
                     <div key={index}>
-                        <p>{tache.title} - {tache.dueDate}</p>
+                        <p>{task.title} - {task.dueDate}</p>
                     </div>
                 ))}
             </div>

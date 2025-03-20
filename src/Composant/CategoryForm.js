@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const CategoryForm = ({ addCategory }) => {
     const [categoryName, setCategoryName] = useState('');
-    const [categoryColor, setCategoryColor] = useState('');
+    const [categoryColor, setCategoryColor] = useState('#000000'); // Couleur par défaut
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,7 +12,7 @@ const CategoryForm = ({ addCategory }) => {
         };
         addCategory(newCategory);
         setCategoryName('');
-        setCategoryColor('');
+        setCategoryColor('#000000'); // Réinitialiser à la couleur par défaut
     };
 
     return (
@@ -30,6 +30,7 @@ const CategoryForm = ({ addCategory }) => {
                     type="color"
                     value={categoryColor}
                     onChange={(e) => setCategoryColor(e.target.value)}
+                    required
                 />
                 <button type="submit">Ajouter la catégorie</button>
             </form>

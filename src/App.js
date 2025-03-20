@@ -9,35 +9,32 @@ import Datas from './Datas.json';
 const App = () => {
     const [tasks, setTasks] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [relations, setRelations] = useState([]);
     const [showCalendar, setShowCalendar] = useState(false);
 
-    // Charger les données depuis localStorage au démarrage
     useEffect(() => {
         const savedTasks = JSON.parse(localStorage.getItem('taches')) || [];
         const savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
+        const savedRelations = JSON.parse(localStorage.getItem('relations')) || [];
         setTasks(savedTasks);
         setCategories(savedCategories);
-
-        console.log(Datas);
+        setRelations(savedRelations);
     }, []);
-
 
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
         localStorage.setItem('categories', JSON.stringify(categories));
-    }, [tasks, categories]);
+        localStorage.setItem('relations', JSON.stringify(relations));
+    }, [tasks, categories, relations]);
 
-    // Ajouter taches
     const addTask = (task) => {
         setTasks([...tasks, task]);
     };
 
-    // Ajouter catégorie
     const addCategory = (category) => {
         setCategories([...categories, category]);
     };
 
-    // Gestion calendrier
     const toggleCalendar = () => setShowCalendar(!showCalendar);
 
     return (
@@ -52,7 +49,7 @@ const App = () => {
                 <CalendarView tasks={tasks} />
             ) : (
                 <>
-                    <TaskList tasks={tasks} />
+                    <TaskList tasks={tasks} setTasks={setTasks} categories={categories} relations={relations} />
                     <TaskForm addTask={addTask} />
                     <CategoryForm addCategory={addCategory} />
                 </>
