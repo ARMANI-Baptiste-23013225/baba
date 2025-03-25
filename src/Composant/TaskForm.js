@@ -1,75 +1,69 @@
 import React, { useState } from 'react';
 
-const TaskForm = ({ addTask }) => {
+const TaskForm = ({ addTask, categories = [], addRelation }) => {
     const [title, setTitle] = useState('');
-    const [dueDate, setDueDate] = useState('');
     const [description, setDescription] = useState('');
-    const [categories, setCategories] = useState([]);
-    const [categoryInput, setCategoryInput] = useState('');
+    const [dueDate, setDueDate] = useState('');
     const [urgent, setUrgent] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!title.trim()) return;
+
         const newTask = {
+            id: Date.now().toString(),
             title,
-            dueDate,
             description,
-            categories,
+            dueDate,
             urgent
         };
+
         addTask(newTask);
-        setTitle('');
-        setDueDate('');
-        setDescription('');
-        setCategories([]);
-        setCategoryInput('');
-        setUrgent(false);
-    };
 
-    const handleCategoryChange = (e) => {
-        setCategoryInput(e.target.value);
-    };
-
-    const addCategoryToTask = () => {
-        if (categoryInput && !categories.includes(categoryInput)) {
-            setCategories([...categories, categoryInput]);
-            setCategoryInput('');
+        // Create relation between task and category
+        if (selectedCategory) {
+            addRelation({
+                taskId: newTask.id,
+                categoryId: selectedCategory
+            });
         }
+
+        // Reset form
+        setTitle('');
+        setDescription('');
+        setDueDate('');
+        setUrgent(false);
+        setSelectedCategory('');
     };
 
     return (
         <div className="task-form">
-            <h2>Créer une tâche</h2>
+            <h2>Ajouter une tâche</h2>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Titre de la tâche"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <input
-                    type="date"
-                    value={dueDate}
-                    onChange={(e) => setDueDate(e.target.value)}
-                />
-                <textarea
-                    placeholder="Description de la tâche"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
                 <div>
                     <input
                         type="text"
-                        placeholder="Catégorie"
-                        value={categoryInput}
-                        onChange={handleCategoryChange}
+                        placeholder="Titre de la tâche"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
                     />
-                    <button type="button" onClick={addCategoryToTask}>Ajouter la catégorie</button>
                 </div>
                 <div>
-                    <strong>Catégories ajoutées :</strong>
-                    {categories.join(', ')}
+                    <textarea
+                        placeholder="Description (optionnel)"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <input
+                        type="date"
+                        value={dueDate}
+                        onChange={(e) => setDueDate(e.target.value)}
+                    />
                 </div>
                 <div className="checkbox-container">
                     <label>
@@ -81,7 +75,20 @@ const TaskForm = ({ addTask }) => {
                         Tâche urgente
                     </label>
                 </div>
-                <button type="submit">Ajouter la tâche</button>
+                <div>
+                    <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value="">-- Aucune catégorie --</option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.title}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <button type="submit">Ajouter</button>
             </form>
         </div>
     );

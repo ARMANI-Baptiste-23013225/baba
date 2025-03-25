@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 
-const CategoryForm = ({ addCategory }) => {
-    const [categoryName, setCategoryName] = useState('');
-    const [categoryColor, setCategoryColor] = useState('#000000'); // Couleur par défaut
+const CategoryForm = ({ addCategory, categories = [], deleteCategory }) => {
+    const [categoryTitle, setCategoryTitle] = useState('');
+    const [categoryColor, setCategoryColor] = useState('#000000');
+    const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newCategory = {
-            name: categoryName,
+            id: Date.now().toString(),
+            title: categoryTitle,
             color: categoryColor,
         };
         addCategory(newCategory);
-        setCategoryName('');
-        setCategoryColor('#000000'); // Réinitialiser à la couleur par défaut
+        setCategoryTitle('');
+        setCategoryColor('#000000');
+    };
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        if (selectedCategoryId) {
+            deleteCategory(selectedCategoryId);
+            setSelectedCategoryId('');
+        }
     };
 
     return (
@@ -22,8 +32,8 @@ const CategoryForm = ({ addCategory }) => {
                 <input
                     type="text"
                     placeholder="Nom de la catégorie"
-                    value={categoryName}
-                    onChange={(e) => setCategoryName(e.target.value)}
+                    value={categoryTitle}
+                    onChange={(e) => setCategoryTitle(e.target.value)}
                     required
                 />
                 <input
@@ -33,6 +43,23 @@ const CategoryForm = ({ addCategory }) => {
                     required
                 />
                 <button type="submit">Ajouter la catégorie</button>
+            </form>
+
+            <h3>Supprimer une catégorie</h3>
+            <form onSubmit={handleDelete}>
+                <select
+                    value={selectedCategoryId}
+                    onChange={(e) => setSelectedCategoryId(e.target.value)}
+                    required
+                >
+                    <option value="">-- Sélectionnez une catégorie --</option>
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>
+                            {category.title}
+                        </option>
+                    ))}
+                </select>
+                <button type="submit">Supprimer la catégorie</button>
             </form>
         </div>
     );
