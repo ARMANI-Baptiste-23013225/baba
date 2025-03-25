@@ -122,3 +122,21 @@ textarea {
 .backup li:last-child {
     border-bottom: none;
 }
+
+.urgent-tag {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 2px 8px;
+    margin-left: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.urgent-task {
+    border-left: 4px solid #ff4d4d;
+}
+
+.checkbox-container {
+    margin: 10px 0;
+}

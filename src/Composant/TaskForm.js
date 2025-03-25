@@ -3,21 +3,27 @@ import React, { useState } from 'react';
 const TaskForm = ({ addTask }) => {
     const [title, setTitle] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [description, setDescription] = useState('');
     const [categories, setCategories] = useState([]);
     const [categoryInput, setCategoryInput] = useState('');
+    const [urgent, setUrgent] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newTask = {
             title,
             dueDate,
-            categories: categories,
+            description,
+            categories,
+            urgent
         };
         addTask(newTask);
         setTitle('');
         setDueDate('');
+        setDescription('');
         setCategories([]);
         setCategoryInput('');
+        setUrgent(false);
     };
 
     const handleCategoryChange = (e) => {
@@ -47,6 +53,11 @@ const TaskForm = ({ addTask }) => {
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                 />
+                <textarea
+                    placeholder="Description de la tâche"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
                 <div>
                     <input
                         type="text"
@@ -59,6 +70,16 @@ const TaskForm = ({ addTask }) => {
                 <div>
                     <strong>Catégories ajoutées :</strong>
                     {categories.join(', ')}
+                </div>
+                <div className="checkbox-container">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={urgent}
+                            onChange={(e) => setUrgent(e.target.checked)}
+                        />
+                        Tâche urgente
+                    </label>
                 </div>
                 <button type="submit">Ajouter la tâche</button>
             </form>

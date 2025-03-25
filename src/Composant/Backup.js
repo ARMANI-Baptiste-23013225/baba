@@ -16,9 +16,18 @@ const Backup = ({ taches, setTasks, categories, setCategories }) => {
     };
 
     const handleLoadBackup = () => {
-        setTasks(prevTasks => [...prevTasks, ...Datas.taches]);
+        // Make sure to preserve the urgent property when loading tasks
+        const tasksWithUrgentProperty = Datas.taches.map(tache => ({
+            ...tache,
+            urgent: tache.urgent === true // Explicitly set true only if it's true in data
+        }));
+
+        setTasks(prevTasks => [...prevTasks, ...tasksWithUrgentProperty]);
         setCategories(prevCategories => [...prevCategories, ...Datas.categories]);
-        setLoadedData(Datas);
+        setLoadedData({
+            taches: tasksWithUrgentProperty,
+            categories: Datas.categories
+        });
     };
 
     return (
@@ -30,7 +39,10 @@ const Backup = ({ taches, setTasks, categories, setCategories }) => {
                     <h3>Tâches chargées :</h3>
                     <ul>
                         {loadedData.taches?.map((tache, index) => (
-                            <li key={index}>{tache.title} - {tache.date_echeance}</li>
+                            <li key={index}>
+                                {tache.title} - {tache.date_echeance}
+                                {tache.urgent && <span className="urgent-tag">URGENT</span>}
+                            </li>
                         ))}
                     </ul>
                     <h3>Catégories chargées :</h3>
