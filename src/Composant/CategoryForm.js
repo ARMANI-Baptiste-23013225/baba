@@ -51,8 +51,9 @@ const CategoryForm = ({ addCategory, categories = [], deleteCategory }) => {
                     value={selectedCategoryId}
                     onChange={(e) => setSelectedCategoryId(e.target.value)}
                     required
+                    className={"supressionC"}
                 >
-                    <option value="">-- Sélectionnez une catégorie --</option>
+                    <option >-- Sélectionnez une catégorie --</option>
                     {categories.map(category => (
                         <option key={category.id} value={category.id}>
                             {category.title}
