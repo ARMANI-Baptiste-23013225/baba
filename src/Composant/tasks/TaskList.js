@@ -8,6 +8,8 @@ const TaskList = ({ tasks = [], setTasks, categories = [], relations = [], setRe
     const [newUrgent, setNewUrgent] = useState(false);
     const [newCategory, setNewCategory] = useState('');
 
+    const activeTasks = tasks.filter(task => !task.done);
+
     const handleEdit = (task) => {
         setEditingTask(task);
         setNewTitle(task.title);
@@ -53,10 +55,16 @@ const TaskList = ({ tasks = [], setTasks, categories = [], relations = [], setRe
 
     const handleDelete = (taskId) => {
         setTasks(tasks.filter(t => t.id !== taskId));
-        setRelations(relations.filter(rel => rel.taskId !== taskId)); // Fixed: was using task.id
+        setRelations(relations.filter(rel => rel.taskId !== taskId));
     };
 
-    // Get category name for a task
+    // New function to mark a task as done
+    const handleDone = (taskId) => {
+        setTasks(tasks.map(task =>
+            task.id === taskId ? { ...task, done: true } : task
+        ));
+    };
+
     const getCategoryForTask = (taskId) => {
         const relation = relations.find(rel => rel.taskId === taskId);
         if (!relation) return null;
@@ -81,7 +89,7 @@ const TaskList = ({ tasks = [], setTasks, categories = [], relations = [], setRe
             tasks: []
         };
 
-        tasks.forEach(task => {
+        activeTasks.forEach(task => {
             const taskRelations = relations.filter(rel => rel.taskId === task.id);
 
             if (taskRelations.length === 0) {
@@ -91,7 +99,6 @@ const TaskList = ({ tasks = [], setTasks, categories = [], relations = [], setRe
                     if (tasksByCategory[rel.categoryId]) {
                         tasksByCategory[rel.categoryId].tasks.push(task);
                     } else {
-                        // If category doesn't exist anymore, put in uncategorized
                         tasksByCategory['uncategorized'].tasks.push(task);
                     }
                 });
@@ -176,6 +183,7 @@ const TaskList = ({ tasks = [], setTasks, categories = [], relations = [], setRe
 
                                             <button onClick={() => handleEdit(task)}>Modifier</button>
                                             <button onClick={() => handleDelete(task.id)}>Supprimer</button>
+                                            <button onClick={() => handleDone(task.id)}>Terminé</button>
                                         </>
                                     )}
                                 </div>
