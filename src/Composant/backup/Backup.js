@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Datas from '../Datas.json';
+import Datas from '../../Datas.json';
 
 const Backup = ({ taches, setTasks, categories, setCategories }) => {
     const [loadedData, setLoadedData] = useState(null);

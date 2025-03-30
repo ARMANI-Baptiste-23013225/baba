@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import TaskForm from './Composant/TaskForm';
-import TaskList from './Composant/TaskList';
-import CategoryForm from './Composant/CategoryForm';
-import CalendarView from './Composant/CalendarView';
-import SearchBar from './Composant/SearchBar';
-import Backup from './Composant/Backup';
+import TaskForm from './Composant/tasks/TaskForm';
+import TaskList from './Composant/tasks/TaskList';
+import CategoryForm from './Composant/categories/CategoryForm';
+import CalendarView from './Composant/calendar/CalendarView';
+import SearchBar from './Composant/search/SearchBar';
+import Backup from './Composant/backup/Backup';
 import Datas from './Datas.json';
 
 const App = () => {
